@@ -13,3 +13,11 @@ type User struct {
 	Name string `json:"name"`
 	ID   int    `json:"id"`
 }
+
+type Configuration struct {
+	PortAddress    string
+	Environment    string
+	DatabaseConfig struct {
+		dsn string
+	}
+}
