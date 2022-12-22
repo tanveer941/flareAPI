@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flareAPI/cloud"
 	"flareAPI/database"
 	"flareAPI/server"
 	"flareAPI/types"
@@ -23,11 +24,17 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	//===================Logger Instance===================================
 	logger := util.NewLogger(os.Stdout, util.LevelAll, true)
 	logger.Info("Running for %s Environment", cfg.Environment)
+	//====================S3 Client Action==================================
+	s3Inst := cloud.S3Action{}
+	s3Action, _ := s3Inst.NewClient()
+	//======================================================
 	servInstance := &server.Server{
-		PortAddr: cfg.PortAddress,
-		Logger:   logger,
-		Store:    storage}
+		PortAddr:  cfg.PortAddress,
+		Logger:    logger,
+		Store:     storage,
+		S3Actions: s3Action}
 	servInstance.Start()
 }
