@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"sync"
 )
 
 func (s *Server) getMyData(context *gin.Context) {
@@ -24,8 +25,10 @@ func (s *Server) getExp(context *gin.Context) {
 func (s *Server) getHugeData(context *gin.Context) {
 	s.Logger.Info("API 3: Huge data fetch")
 	fetchChan := make(chan string, 2)
-	util.Fetch3SecData(fetchChan)
-	util.Fetch5SecData(fetchChan)
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+	util.Fetch3SecData(fetchChan, &wg)
+	util.Fetch5SecData(fetchChan, &wg)
 	close(fetchChan)
 	// Add data in array
 	dataArray := make([]string, 0)
@@ -37,6 +40,17 @@ func (s *Server) getHugeData(context *gin.Context) {
 
 func (s *Server) getHugeDataConcurrency(context *gin.Context) {
 	s.Logger.Info("API 4: Huge data concurrency fetch")
-	hugeData := ""
-	context.JSON(http.StatusOK, gin.H{"message": hugeData})
+	fetchChan := make(chan string, 2)
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+	go util.Fetch3SecData(fetchChan, &wg)
+	go util.Fetch5SecData(fetchChan, &wg)
+	wg.Wait()
+	close(fetchChan)
+	// Add data in array
+	dataArray := make([]string, 0)
+	for data := range fetchChan {
+		dataArray = append(dataArray, data)
+	}
+	context.PureJSON(http.StatusOK, dataArray)
 }
