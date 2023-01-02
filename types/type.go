@@ -18,6 +18,6 @@ type Configuration struct {
 	PortAddress    string
 	Environment    string
 	DatabaseConfig struct {
-		dsn string
+		Dsn string
 	}
 }

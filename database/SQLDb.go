@@ -1,17 +1,21 @@
 package database
 
 import (
+	"database/sql"
 	"flareAPI/types"
-	"github.com/jmoiron/sqlx"
+	_ "github.com/go-sql-driver/mysql"
+	//_ "github.com/jmoiron/sqlx"
 	"time"
 )
 
 type DB struct {
-	*sqlx.DB
+	*sql.DB
+	//*sqlx.DB
 }
 
 func NewSQLDb(dsn string) (*DB, error) {
-	db, err := sqlx.Connect("mysql", dsn)
+	//db, err := sqlx.Connect("mysql", dsn)
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, err
 	}

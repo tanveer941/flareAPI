@@ -1,6 +1,7 @@
 package server
 
 import (
+	"flareAPI/cloud"
 	"flareAPI/database"
 	"flareAPI/util"
 	"github.com/gin-gonic/gin"
@@ -8,9 +9,10 @@ import (
 )
 
 type Server struct {
-	PortAddr string
-	Logger   *util.Logger
-	Store    database.Storer
+	PortAddr  string
+	Logger    *util.Logger
+	Store     database.Storer
+	S3Actions *cloud.S3Action
 }
 
 func (s *Server) Start() error {
