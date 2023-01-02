@@ -27,5 +27,6 @@ func (s *Server) Start() error {
 	})
 	router.GET("/api1", s.getMyData)
 	router.GET("/api2", s.getExp)
+	router.GET("/api3", s.getHugeData)
 	return router.Run(s.PortAddr)
 }
