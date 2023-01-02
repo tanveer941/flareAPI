@@ -8,11 +8,11 @@ import (
 func Fetch3SecData(myChan chan string, wg *sync.WaitGroup) {
 	time.Sleep(3 * time.Second)
 	myChan <- "3 sec"
-	wg.Done()
+	defer wg.Done()
 }
 
 func Fetch5SecData(myChan chan string, wg *sync.WaitGroup) {
 	time.Sleep(5 * time.Second)
 	myChan <- "5 sec"
-	wg.Done()
+	defer wg.Done()
 }
