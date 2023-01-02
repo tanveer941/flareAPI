@@ -14,9 +14,10 @@ func main() {
 	cfg := types.Configuration{}
 	cfg.PortAddress = ":5000"
 	cfg.Environment = "Development"
+	cfg.DatabaseConfig.Dsn = "root:password@tcp(localhost:3306)/test?parseTime=true"
 	// Initialize or connect to the DB in the beginning, The interfaces has its methods develop each one on its own
 	//===================MySQL DB==================================
-	//storage, err := database.NewSQLDb("SqlDbDSN")
+	//storage, err := database.NewSQLDb(cfg.DatabaseConfig.Dsn)
 	//===================Local DB===================================
 	storage, err := database.NewLocalDB()
 	//======================================================
